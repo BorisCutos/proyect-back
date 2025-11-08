@@ -1,4 +1,4 @@
-name: CI-Helm-Deploy-Secundario
+name: CI-Helm-Deploy-back
 
 on:
   push:
