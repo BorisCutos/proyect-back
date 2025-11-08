@@ -82,7 +82,10 @@ jobs:
       - name: Deploy via Helm (equivalente a tu oc.yaml)
         run: |
           helm upgrade --install backend-data ./mi-chart \
-            -n ${{ env.OPENSHIFT_PROJECT }}
+            -n ${{ env.OPENSHIFT_PROJECT }} \
+            --set namespace=${{ env.OPENSHIFT_PROJECT }} \
+            --set image.repository=${{ secrets.DOCKER_USERNAME }}/backend-data \
+            --set image.tag=build-${{ github.run_number }}
 
       - name: Wait for rollout
         run: oc rollout status deployment/backend-data -n ${{ env.OPENSHIFT_PROJECT }}
