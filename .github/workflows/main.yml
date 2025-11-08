@@ -1,4 +1,4 @@
-name: CI-Helm-Deploy-back
+name: CI-Helm-Deploy-Secundario
 
 on:
   push:
@@ -69,15 +69,8 @@ jobs:
       - name: Select OpenShift project
         run: oc project ${{ env.OPENSHIFT_PROJECT }}
 
-      # Usar el build number como tag por defecto del chart (Chart.appVersion)
-      - name: Set Chart appVersion to this build tag
-        run: |
-          sed -i "s/^appVersion: .*/appVersion: \"build-${{ github.run_number }}\"/" mi-chart/Chart.yaml
-          grep -n '^appVersion' mi-chart/Chart.yaml
-
-      # Lint con un tag temporal para evitar fallos si la plantilla usa image.tag
       - name: Helm Lint (sanity)
-        run: helm lint ./mi-chart --set image.tag=lint
+        run: helm lint ./mi-chart
 
       - name: Deploy via Helm (equivalente a tu oc.yaml)
         run: |
