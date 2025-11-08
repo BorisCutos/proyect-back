@@ -1,0 +1,6 @@
+apiVersion: v2
+name: backend-data
+description: Backend-Data (Flask) que se conecta a PostgreSQL
+type: application
+version: 0.1.0
+appVersion: "build-0

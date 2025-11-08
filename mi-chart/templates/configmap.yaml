@@ -1,0 +1,9 @@
+{{- if .Values.config.create }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.names.configmap }}
+  namespace: {{ .Values.namespace }}
+data:
+  DATABASE: {{ .Values.config.DATABASE | quote }}
+{{- end }}

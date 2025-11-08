@@ -1,0 +1,74 @@
+# Namespace (puedes dejarlo o manejarlo con -n en helm)
+namespace: k-att-y70-dev
+
+fullnameOverride: "backend-data"
+
+labels:
+  app: backend-data
+
+names:
+  deployment: backend-data
+  service: backend-data
+  configmap: backend-data-cm
+  secret: backend-data-secret
+  hpa: backend-data-hpa
+  pvc: backend-data-pvc
+
+image:
+  repository: boriscutos/backend-data
+  tag: ""                 # si está vacío, toma .Chart.AppVersion
+  pullPolicy: Always
+
+replicas: 1
+
+containerPort: 3002
+servicePort: 3002
+
+service:
+  type: ClusterIP
+
+# ENV para la DB (Bitnami PostgreSQL release: "mydb")
+env:
+  DB_HOST: "mydb-postgresql"
+  DB_PORT: "5432"
+  DB_USER: "openshift"
+  DB_NAME: "proj-openshift"
+
+# Extra envs desde Secrets externos (p.ej. secret de Bitnami)
+extraEnvFromSecretKeys:
+  - name: DB_PASSWORD
+    secretName: "mydb-postgresql"
+    key: "password"
+
+probes:
+  startup:
+    enabled: false
+  readiness:
+    path: /readiness
+  liveness:
+    path: /health
+
+resources:
+  requests: { cpu: "250m", memory: "256Mi" }
+  limits:   { cpu: "500m", memory: "512Mi" }
+
+# ----- OPCIONALES -----
+config:
+  create: false
+  DATABASE: ""   # si quisieras usar un CM propio
+
+secret:
+  create: false
+  PASSWORD_B64: ""  # si quisieras un secret propio (no Bitnami)
+
+hpa:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  cpuAverageUtilization: 100
+
+pvc:
+  enabled: false
+  storageClassName: gp3
+  accessModes: [ "ReadWriteOnce" ]
+  size: 1Gi
