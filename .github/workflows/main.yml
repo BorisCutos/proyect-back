@@ -26,7 +26,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ secrets.DOCKER_USERNAME }}/segundodeploy
+          images: ${{ secrets.DOCKER_USERNAME }}/backend-data
           tags: |
             type=raw,value=build-${{ github.run_number }}
 
