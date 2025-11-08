@@ -81,11 +81,11 @@ jobs:
 
       - name: Deploy via Helm (equivalente a tu oc.yaml)
         run: |
-          helm upgrade --install mi-deployment-secundario-2 ./mi-chart \
+          helm upgrade --install backend-data ./mi-chart \
             -n ${{ env.OPENSHIFT_PROJECT }}
 
       - name: Wait for rollout
-        run: oc rollout status deployment/mi-deployment-secundario-2 -n ${{ env.OPENSHIFT_PROJECT }}
+        run: oc rollout status deployment/backend-data -n ${{ env.OPENSHIFT_PROJECT }}
 
       - name: Show resources
         run: |
